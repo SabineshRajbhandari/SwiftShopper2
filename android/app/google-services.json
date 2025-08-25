@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "401414505424",
+    "project_id": "swiftshopperappv2",
+    "storage_bucket": "swiftshopperappv2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401414505424:android:13da6aa4de36eb7b302fd5",
+        "android_client_info": {
+          "package_name": "com.example.swiftshopper2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRsrRHf_YphPYWCAqdgbN3RYE1XBEAljs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

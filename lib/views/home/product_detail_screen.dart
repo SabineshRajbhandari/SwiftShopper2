@@ -20,52 +20,26 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(name)),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              imageUrl,
-              width: double.infinity,
-              height: 300,
-              fit: BoxFit.cover,
+            imageUrl != ''
+                ? Image.network(imageUrl, height: 200, fit: BoxFit.cover)
+                : Container(height: 200, color: Colors.grey[300]),
+            const SizedBox(height: 16),
+            Text(
+              name,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            const SizedBox(height: 8),
+            Text(
+              '\$${price.toStringAsFixed(2)}',
+              style: const TextStyle(fontSize: 20),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                '\$${price.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 20, color: Colors.green),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(description, style: const TextStyle(fontSize: 16)),
-            ),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // TODO: Add product to cart
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Product added to cart!')),
-                  );
-                },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                  child: Text('Add to Cart', style: TextStyle(fontSize: 18)),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
+            Text(description),
           ],
         ),
       ),

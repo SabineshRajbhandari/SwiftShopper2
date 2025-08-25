@@ -1,9 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:logger/logger.dart';
 
 class NotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
+
+  final Logger _logger = Logger();
 
   static final NotificationService _instance = NotificationService._internal();
   factory NotificationService() => _instance;
@@ -26,7 +29,7 @@ class NotificationService {
       initSettings,
       onDidReceiveNotificationResponse: (payload) {
         // Handle notification tap
-        print('Notification payload: $payload');
+        _logger.i("Notification payload: $payload");
       },
     );
 
@@ -35,13 +38,15 @@ class NotificationService {
 
     // Handle background & terminated state notification taps
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Notification clicked with data: ${message.data}');
+      _logger.i("Notification clicked with data: ${message.data}");
       // Navigate user or handle notification tap
     });
   }
 
   Future<String?> getDeviceToken() async {
-    return await _firebaseMessaging.getToken();
+    final token = await _firebaseMessaging.getToken();
+    _logger.d("FCM device token retrieved: $token");
+    return token;
   }
 
   void _showNotification(RemoteMessage message) async {
@@ -69,6 +74,7 @@ class NotificationService {
         notification.body,
         platformDetails,
       );
+      _logger.i("Foreground notification displayed: ${notification.title}");
     }
   }
 }

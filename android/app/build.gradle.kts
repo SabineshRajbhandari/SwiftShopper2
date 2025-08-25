@@ -18,13 +18,13 @@ val localProps = Properties().apply {
 }
 
 // Extract values with fallbacks
-val flutterMinSdk = localProps.getProperty("flutter.minSdkVersion")?.toInt() ?: 21
+val flutterMinSdk = localProps.getProperty("flutter.minSdkVersion")?.toInt() ?: 24
 val flutterTargetSdk = localProps.getProperty("flutter.targetSdkVersion")?.toInt() ?: 33
 val flutterVersionCode = localProps.getProperty("flutter.versionCode")?.toInt() ?: 1
 val flutterVersionName = localProps.getProperty("flutter.versionName") ?: "1.0.0"
 // Optional: override compile/ndk versions if needed
-val flutterCompileSdk = localProps.getProperty("flutter.compileSdkVersion")?.toInt() ?: 33
-val flutterNdkVersion = localProps.getProperty("flutter.ndkVersion") ?: "21.4.7075529"
+val flutterCompileSdk = localProps.getProperty("flutter.compileSdkVersion")?.toInt() ?: 36
+val flutterNdkVersion = localProps.getProperty("flutter.ndkVersion") ?: "27.0.12077973"
 
 android {
     namespace = "com.example.swiftshopper2"
@@ -39,7 +39,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 
     defaultConfig {

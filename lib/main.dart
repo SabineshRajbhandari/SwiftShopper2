@@ -3,12 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 import 'views/auth/login_screen.dart';
-import 'views/home/home_screen.dart'; // create this screen for post-login
+import 'views/home/home_screen.dart'; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // <-- Must be correct
+    options: DefaultFirebaseOptions.currentPlatform, 
   );
   runApp(const MyApp());
 }

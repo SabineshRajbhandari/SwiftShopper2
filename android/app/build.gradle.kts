@@ -1,38 +1,61 @@
+// File: android/app/build.gradle.kts
+
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("com.google.gms.google-services") // FlutterFire plugin
     id("dev.flutter.flutter-gradle-plugin")
+    // If you use Firebase / Google services:
+    // id("com.google.gms.google-services")
+    // Add other plugins here as needed
 }
+
+// Load local.properties to retrieve Flutter and version values
+val localProps = Properties().apply {
+    FileInputStream(rootProject.file("local.properties")).use { load(it) }
+}
+
+// Extract values with fallbacks
+val flutterMinSdk = localProps.getProperty("flutter.minSdkVersion")?.toInt() ?: 21
+val flutterTargetSdk = localProps.getProperty("flutter.targetSdkVersion")?.toInt() ?: 33
+val flutterVersionCode = localProps.getProperty("flutter.versionCode")?.toInt() ?: 1
+val flutterVersionName = localProps.getProperty("flutter.versionName") ?: "1.0.0"
+// Optional: override compile/ndk versions if needed
+val flutterCompileSdk = localProps.getProperty("flutter.compileSdkVersion")?.toInt() ?: 33
+val flutterNdkVersion = localProps.getProperty("flutter.ndkVersion") ?: "21.4.7075529"
 
 android {
     namespace = "com.example.swiftshopper2"
-    compileSdk = 33
-    ndkVersion = "21.4.7075529" // optional, matches your environment
+    compileSdk = flutterCompileSdk
+    ndkVersion = flutterNdkVersion
+
+    compileOptions {
+        // Enable core library desugaring for Java 8+ APIs
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 
     defaultConfig {
         applicationId = "com.example.swiftshopper2"
-        minSdk = 21 // Minimum required for Firebase and desugaring
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = flutterMinSdk
+        targetSdk = flutterTargetSdk
+        versionCode = flutterVersionCode
+        versionName = flutterVersionName
     }
 
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("debug")
-            isMinifyEnabled = false
+            isMinifyEnabled = false // Optional, keep if needed
+            isShrinkResources = false
         }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-        isCoreLibraryDesugaringEnabled = true
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
@@ -41,6 +64,6 @@ flutter {
 }
 
 dependencies {
-    // Required for flutter_local_notifications and Java 11 desugaring
+    // Required for core library desugaring (e.g., flutter_local_notifications)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

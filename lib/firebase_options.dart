@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'swiftshopperappv2.firebasestorage.app',
     measurementId: 'G-TF23D4KMMQ',
   );
+
 }

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'signup_screen.dart';
 import '../home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -27,7 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _handleLogin() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+    });
 
     try {
       final userCredential = await FirebaseAuth.instance
@@ -38,22 +39,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
       final user = userCredential.user;
 
-      // Fetch username from Firestore
-      String username = 'User';
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user!.uid)
-          .get();
-      if (doc.exists && doc.data()!.containsKey('username')) {
-        username = doc['username'];
-      }
+      if (user != null) {
+        // Optionally fetch username if needed
+        // final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        // String username = doc.exists && doc.data()!.containsKey('username') ? doc['username'] : 'User';
 
-      // Navigate to HomeScreen with username
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => HomeScreen(username: username)),
-        );
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const HomeScreen(products: []),
+            ), // Pass actual products list here
+          );
+        }
       }
     } on FirebaseAuthException catch (e) {
       String message;
@@ -122,8 +120,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value == null || value.isEmpty)
+                        if (value == null || value.isEmpty) {
                           return 'Enter email';
+                        }
                         if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                           return 'Enter valid email';
                         }
@@ -139,8 +138,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       obscureText: true,
                       validator: (value) {
-                        if (value == null || value.isEmpty)
+                        if (value == null || value.isEmpty) {
                           return 'Enter password';
+                        }
                         return null;
                       },
                     ),
